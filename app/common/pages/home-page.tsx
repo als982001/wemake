@@ -1,16 +1,41 @@
-import { Button } from "~/common/components/ui/button";
+import type { MetaFunction } from "react-router";
+import { ProductCard } from "~/features/products/components/product-card";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Home | wemake" },
+    {
+      name: "description",
+      content: "Welcome to wemake",
+    },
+  ];
+};
 
 export default function HomePage() {
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-6">Welcome to Our App</h1>
-      <p className="text-lg mb8">
-        Get started by exploring our features or sign in to your account.
-      </p>
-      <div className="flex gap-4">
-        <Button variant="default">Get Started</Button>
-        <Button variant="outline">Learn More</Button>
+    <div className="px-20">
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Today's Products
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            The best products made by our community today.
+          </p>
+        </div>
+        {Array.from({ length: 10 }).map((_, index) => {
+          return (
+            <ProductCard
+              id={`productId-${index}`}
+              name="Product Name"
+              description="Product Description"
+              commentsCount={12}
+              viewsCount={123}
+              votesCount={123}
+            />
+          );
+        })}
       </div>
-    </main>
+    </div>
   );
 }
