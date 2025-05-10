@@ -6,7 +6,7 @@ import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
 
 export default defineConfig({
-  plugins: [reactRouter(), tsconfigPaths(), react()],
+  plugins: [reactRouter(), tsconfigPaths()],
   build: {
     cssMinify: true,
     ssr: false,
