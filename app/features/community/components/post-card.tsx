@@ -1,3 +1,4 @@
+import { DotIcon } from "lucide-react";
 import { Link } from "react-router";
 import {
   Avatar,
@@ -43,15 +44,13 @@ export function PostCard({
               <span>
                 {author} on {category}
               </span>
-              <span>.</span>
+              <DotIcon className="w-4 h-4" />
               <span>{postedAt}</span>
             </div>
           </div>
         </CardHeader>
         <CardFooter>
-          <Button variant="link" asChild>
-            <Link to={`/community/${id}`}>Reply &rarr;</Link>
-          </Button>
+          <Button variant="link">Reply &rarr;</Button>
         </CardFooter>
       </Card>
     </Link>
