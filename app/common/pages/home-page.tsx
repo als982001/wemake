@@ -1,8 +1,8 @@
 import { Link, type MetaFunction } from "react-router";
-import { ProductCard } from "~/features/products/components/product-card";
+import { ProductCard } from "~/features/products/components/ProductCard";
 import { Button } from "../components/ui/button";
-import { PostCard } from "~/features/community/components/post-card";
-import { IdeaCard } from "~/features/ideas/components/idea-card";
+import { PostCard } from "~/features/community/components/PostCard";
+import { IdeaCard } from "~/features/ideas/components/IdeaCard";
 import { JobCard } from "~/features/jobs/components/JobCard";
 
 export const meta: MetaFunction = () => {
