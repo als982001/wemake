@@ -22,5 +22,7 @@ export function loader({ params }: Route.LoaderArgs) {
     return data(null, { status: 404 });
   }
 
+  console.log({ period, url });
+
   return redirect(url);
 }

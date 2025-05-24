@@ -19,6 +19,8 @@ const paramsSchema = z.object({
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { success, data: parsedData } = paramsSchema.safeParse(params);
 
+  console.log({ success, parsedData, params });
+
   if (!success) {
     throw data(
       { error_code: "invalid_praams", message: "Invalid params" },
@@ -28,6 +30,8 @@ export const loader = ({ params }: Route.LoaderArgs) => {
 
   const date = DateTime.fromObject(parsedData).setZone("Asia/Seoul");
 
+  console.log("date", date);
+
   if (!date.isValid) {
     throw data(
       { error_code: "invalid_date", message: "Invalid date" },
@@ -36,6 +40,8 @@ export const loader = ({ params }: Route.LoaderArgs) => {
   }
 
   const today = DateTime.now().setZone("Asia/Seoul").startOf("day");
+
+  console.log("today", today);
 
   if (date > today) {
     throw data(
@@ -50,6 +56,7 @@ export const loader = ({ params }: Route.LoaderArgs) => {
 export default function DailyLeaderboardPage({
   loaderData,
 }: Route.ComponentProps) {
+  console.log("loaderData", loaderData);
   const urlDate = DateTime.fromObject({
     year: loaderData.year,
     month: loaderData.month,
