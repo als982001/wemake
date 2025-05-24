@@ -24,6 +24,13 @@ export default function ProductPagination({
     setSearchParams(searchParams);
   };
 
+  const getUrlWithPage = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", String(page));
+    console.log("params", params);
+    return `?${params}`;
+  };
+
   return (
     <div>
       <Pagination>
@@ -32,7 +39,7 @@ export default function ProductPagination({
             <>
               <PaginationItem>
                 <PaginationPrevious
-                  to={`?page=${page - 1}`}
+                  to={getUrlWithPage(page - 1)}
                   onClick={(event) => {
                     event.preventDefault();
                     onClick(page - 1);
@@ -41,24 +48,25 @@ export default function ProductPagination({
               </PaginationItem>
               <PaginationItem>
                 <PaginationLink
-                  to={`?page=${page}`}
+                  to={getUrlWithPage(page - 1)}
                   onClick={(event) => {
                     event.preventDefault();
-                    onClick(page);
+                    onClick(page - 1);
                   }}
                 >
-                  {page}
+                  {page - 1}
                 </PaginationLink>
               </PaginationItem>
             </>
           )}
           <PaginationItem>
             <PaginationLink
-              to={`?page=${page}`}
+              to={getUrlWithPage(page)}
               onClick={(event) => {
                 event.preventDefault();
                 onClick(page);
               }}
+              isActive
             >
               {page}
             </PaginationLink>
@@ -67,7 +75,7 @@ export default function ProductPagination({
             <>
               <PaginationItem>
                 <PaginationLink
-                  to={`?page=${page + 1}`}
+                  to={getUrlWithPage(page + 1)}
                   onClick={(event) => {
                     event.preventDefault();
                     onClick(page + 1);
@@ -83,7 +91,7 @@ export default function ProductPagination({
               )}
               <PaginationItem>
                 <PaginationNext
-                  to={`?page=${page + 1}`}
+                  to={getUrlWithPage(page + 1)}
                   onClick={(event) => {
                     event.preventDefault();
                     onClick(page + 1);
