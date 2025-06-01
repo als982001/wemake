@@ -42,7 +42,7 @@ export default function LeaderboardPage() {
           );
         })}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboards/daily">
+          <Link to="/products/leaderboards/daily" reloadDocument>
             Explore all products &rarr;
           </Link>
         </Button>
@@ -71,7 +71,7 @@ export default function LeaderboardPage() {
           );
         })}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboards/weekly">
+          <Link to="/products/leaderboards/weekly" reloadDocument>
             Explore all products &rarr;
           </Link>
         </Button>
@@ -100,7 +100,7 @@ export default function LeaderboardPage() {
           );
         })}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboards/monthly">
+          <Link to="/products/leaderboards/monthly" reloadDocument>
             Explore all products &rarr;
           </Link>
         </Button>
@@ -129,7 +129,7 @@ export default function LeaderboardPage() {
           );
         })}
         <Button variant="link" asChild className="text-lg self-center">
-          <Link to="/products/leaderboards/yearly">
+          <Link to="/products/leaderboards/yearly" reloadDocument>
             Explore all products &rarr;
           </Link>
         </Button>
