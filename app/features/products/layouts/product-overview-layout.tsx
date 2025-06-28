@@ -62,7 +62,7 @@ export default function ProductOverviewLayout() {
         </NavLink>
       </div>
       <div>
-        <Outlet />
+        <Outlet /> {/* Outlet을 통해 하위 라우트가 렌더링된다 */}
       </div>
     </div>
   );
