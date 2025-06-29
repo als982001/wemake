@@ -1,7 +1,4 @@
-import { ChevronUpIcon, StarIcon } from "lucide-react";
 import type { Route } from "./+types/product-overview-page";
-import { Button } from "~/common/components/ui/button";
-import { Link } from "react-router";
 
 export function meta() {
   return [
