@@ -2,7 +2,7 @@ import { Link, type MetaFunction } from "react-router";
 import { ProductCard } from "~/features/products/components/product-card";
 import { Button } from "../components/ui/button";
 import { PostCard } from "~/features/community/components/PostCard";
-import { IdeaCard } from "~/features/ideas/components/IdeaCard";
+import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/JobCard";
 import { TeamCard } from "~/features/teams/components/TeamCard";
 
