@@ -1,16 +1,5 @@
 import { Link } from "react-router";
-import { Separator } from "./ui/separator";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "./ui/navigation-menu";
-import { Button } from "./ui/button";
-import { cn } from "~/lib/utils";
+
 import {
   BarChart3Icon,
   BellIcon,
@@ -19,6 +8,10 @@ import {
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
+import { cn } from "~/lib/utils";
+
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,7 +21,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "./ui/navigation-menu";
+import { Separator } from "./ui/separator";
 
 interface MenuItem {
   name: string;

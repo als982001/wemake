@@ -1,9 +1,9 @@
 import { Form } from "react-router";
 
-import type { Route } from "./+types/otp-complete-page";
-
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
+
+import type { Route } from "./+types/otp-complete-page";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Verify OTP | wemake" }];

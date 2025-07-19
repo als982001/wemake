@@ -1,7 +1,8 @@
-import { Badge } from "~/common/components/ui/badge";
-import type { Route } from "./+types/job-page";
 import { DotIcon } from "lucide-react";
+import { Badge } from "~/common/components/ui/badge";
 import { Button } from "~/common/components/ui/button";
+
+import type { Route } from "./+types/job-page";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Job Details | wemake" }];
