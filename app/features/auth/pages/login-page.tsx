@@ -4,6 +4,7 @@ import type { Route } from "./+types/login-page";
 
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
+import AuthButtons from "../components/auth-buttons";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Login | wemake" }];
@@ -40,6 +41,7 @@ export default function LoginPage() {
             Log in
           </Button>
         </Form>
+        <AuthButtons />
       </div>
     </div>
   );
