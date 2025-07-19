@@ -1,10 +1,12 @@
 import { Link, type MetaFunction } from "react-router";
-import { ProductCard } from "~/features/products/components/product-card";
-import { Button } from "../components/ui/button";
-import { PostCard } from "~/features/community/components/PostCard";
+
+import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/JobCard";
+import { ProductCard } from "~/features/products/components/product-card";
 import { TeamCard } from "~/features/teams/components/TeamCard";
+
+import { Button } from "../components/ui/button";
 
 export const meta: MetaFunction = () => {
   return [
