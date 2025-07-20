@@ -17,7 +17,7 @@ interface MessageCardProps {
   lastMessage: string;
 }
 
-export function MessageCard({
+export default function MessageRoomCard({
   id,
   avatarUrl,
   name,
@@ -39,7 +39,7 @@ export function MessageCard({
               <AvatarFallback>{name[0]}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-medium">{name}</span>
+              <span className="text-sm">{name}</span>
               <span className="text-xs text-muted-foreground">
                 {lastMessage}
               </span>
