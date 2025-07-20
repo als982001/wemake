@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router";
-import { ChevronUpIcon, StarIcon } from "lucide-react";
 
+import { ChevronUpIcon, StarIcon } from "lucide-react";
 import { Button, buttonVariants } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -43,6 +43,7 @@ export default function ProductOverviewLayout() {
       </div>
       <div className="flex gap-2.5">
         <NavLink
+          end
           className={({ isActive }) =>
             cn(
               buttonVariants({ variant: "outline" }),
