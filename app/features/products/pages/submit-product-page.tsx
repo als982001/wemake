@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Form } from "react-router";
 
-import type { Route } from "./+types/submit-page";
+import { Form } from "react-router";
 
 import { Hero } from "~/common/components/hero";
 import InputPair from "~/common/components/input-pair";
 import SelectPair from "~/common/components/select-pair";
 import { Button } from "~/common/components/ui/button";
-import { Label } from "~/common/components/ui/label";
 import { Input } from "~/common/components/ui/input";
+import { Label } from "~/common/components/ui/label";
+
+import type { Route } from "./+types/submit-product-page";
 
 export const meta: Route.MetaFunction = () => {
   return [

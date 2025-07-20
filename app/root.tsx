@@ -1,10 +1,10 @@
 import {
-  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   useLocation,
 } from "react-router";
 
@@ -12,6 +12,7 @@ import type { Route } from "./+types/root";
 import "./app.css";
 // import stylesheet from "./app.css?url";
 import Navigation from "./common/components/Navigation";
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -51,7 +52,7 @@ export default function App() {
     <div className={pathname.includes("/auth/") ? "" : "py-28 px-20"}>
       {pathname.includes("/auth") ? null : (
         <Navigation
-          isLoggedIn={false}
+          isLoggedIn={true} // 임시
           hasNotifications={false}
           hasMessages={false}
         />

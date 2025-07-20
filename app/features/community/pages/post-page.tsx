@@ -1,6 +1,6 @@
 import { Form, Link } from "react-router";
 
-import { ChevronUpIcon, DotIcon, MessageCircleIcon } from "lucide-react";
+import { ChevronUpIcon, DotIcon } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
