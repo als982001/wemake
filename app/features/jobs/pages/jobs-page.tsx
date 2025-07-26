@@ -1,10 +1,12 @@
 import { useSearchParams } from "react-router";
-import type { Route } from "./+types/jobs-page";
+
 import { Hero } from "~/common/components/hero";
-import { JobCard } from "../components/JobCard";
-import { JOB_TYPES, LOCATION_TYPES, SALARY_RANGE } from "../constants";
 import { Button } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
+
+import { JobCard } from "../components/JobCard";
+import { JOB_TYPES, LOCATION_TYPES, SALARY_RANGE } from "../constants";
+import type { Route } from "./+types/jobs-page";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -24,8 +26,8 @@ export default function JobsPage() {
   return (
     <div className="space-y-20">
       <Hero title="Jobs" subtitle="Companies looking for makers" />
-      <div className="grid grid-cols-6 gap-20 items-start">
-        <div className="grid grid-cols-3 col-span-4 gap-5">
+      <div className="grid grid-cols-1 xl:grid-cols-6 gap-20 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:col-span-4 gap-5">
           {Array.from({ length: 20 }).map((_, index) => (
             <JobCard
               key={`jobId-${index}`}
