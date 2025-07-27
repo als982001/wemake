@@ -5,6 +5,7 @@ import InputPair from "~/common/components/input-pair";
 import SelectPair from "~/common/components/select-pair";
 import { Button } from "~/common/components/ui/button";
 
+import { PRODUCT_STAGES } from "../constants";
 import type { Route } from "./+types/submit-team-page";
 
 export const meta: Route.MetaFunction = () => [
@@ -33,12 +34,7 @@ export default function SubmitTeamPage() {
             name="stage"
             required
             placeholder="Select the stage of your product"
-            options={[
-              { label: "Idea", value: "idea" },
-              { label: "Prototype", value: "prototype" },
-              { label: "MVP", value: "mvp" },
-              { label: "Product", value: "product" },
-            ]}
+            options={PRODUCT_STAGES}
           />
           <InputPair
             label="What is the size of your team?"
