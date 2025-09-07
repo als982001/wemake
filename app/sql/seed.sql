@@ -23,11 +23,11 @@ VALUES (1, 'b9b6bd98-b64b-433f-b230-016bffa349de');
 -- Seed reviews
 INSERT INTO reviews (product_id, profile_id, rating, review, created_at, updated_at)
 VALUES
-  (1, 'b9b6bd98-b64b-433f-b230-016bffa349de', 5, 'Excellent developer tool!', NOW(), NOW()),
-  (2, 'b9b6bd98-b64b-433f-b230-016bffa349de', 4, 'Great design features', NOW(), NOW()),
-  (3, 'b9b6bd98-b64b-433f-b230-016bffa349de', 5, 'Amazing marketing automation', NOW(), NOW()),
-  (4, 'b9b6bd98-b64b-433f-b230-016bffa349de', 4, 'Very helpful coding assistant', NOW(), NOW()),
-  (5, 'b9b6bd98-b64b-433f-b230-016bffa349de', 5, 'Powerful visualization tool', NOW(), NOW());
+  (6, 'b9b6bd98-b64b-433f-b230-016bffa349de', 5, 'Excellent developer tool!', NOW(), NOW()),
+  (7, 'b9b6bd98-b64b-433f-b230-016bffa349de', 4, 'Great design features', NOW(), NOW()),
+  (8, 'b9b6bd98-b64b-433f-b230-016bffa349de', 5, 'Amazing marketing automation', NOW(), NOW()),
+  (9, 'b9b6bd98-b64b-433f-b230-016bffa349de', 4, 'Very helpful coding assistant', NOW(), NOW()),
+  (10, 'b9b6bd98-b64b-433f-b230-016bffa349de', 5, 'Powerful visualization tool', NOW(), NOW());
 
 -- Seed topics
 INSERT INTO topics (name, slug, created_at)
