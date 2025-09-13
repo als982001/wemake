@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import { ChevronUpIcon, DotIcon } from "lucide-react";
+import { DateTime } from "luxon";
 import {
   Avatar,
   AvatarFallback,
@@ -16,12 +17,12 @@ import {
 import { cn } from "~/lib/utils";
 
 interface IPostCardProprs {
-  id: string;
+  id: number;
   title: string;
   author: string;
-  authorAvatarUrl: string;
+  authorAvatarUrl: string | null;
   category: string;
-  postedAt: string;
+  postedAt: Date;
   expanded?: boolean;
   votesCount?: number;
 }
@@ -56,7 +57,7 @@ export function PostCard({
                 {author} on {category}
               </span>
               <DotIcon className="w-4 h-4" />
-              <span>{postedAt}</span>
+              <span>{DateTime.fromJSDate(postedAt).toRelative()}</span>
             </div>
           </div>
         </CardHeader>

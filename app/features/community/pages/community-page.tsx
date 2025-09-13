@@ -13,13 +13,21 @@ import { Input } from "~/common/components/ui/input";
 
 import { PostCard } from "../components/post-card";
 import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
+import { getPosts, getTopics } from "../queries";
 import type { Route } from "./+types/community-page";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | wemake" }];
 };
 
-export default function CommunityPage() {
+export const loader = async () => {
+  const topics = await getTopics();
+  const posts = await getPosts();
+
+  return { topics, posts };
+};
+
+export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sorting = searchParams.get("sorting") || "newest";
   const period = searchParams.get("period") || "all";
@@ -94,15 +102,16 @@ export default function CommunityPage() {
             </Button>
           </div>
           <div className="space-y-5">
-            {Array.from({ length: 11 }).map((_, index) => (
+            {loaderData.posts.map((post) => (
               <PostCard
-                key={`postId-${index}`}
-                id={`postId-${index}`}
-                title="What is the best productivity tool?"
-                author="Nico"
-                authorAvatarUrl="https://github.com/apple.png"
-                category="Productivity"
-                postedAt="12 hours ago"
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                author={post.author}
+                authorAvatarUrl={post.authorAvatarUrl}
+                category={post.topic}
+                postedAt={post.createdAt}
+                votesCount={post.upvotes}
                 expanded
               />
             ))}
@@ -113,15 +122,14 @@ export default function CommunityPage() {
             Topics
           </span>
           <div className="flex flex-col gap-2 items-start">
-            {[
-              "AI Tools",
-              "Design Tools",
-              "Dev Tools",
-              "Note Taking Apps",
-              "Productivity Tools",
-            ].map((category) => (
-              <Button asChild variant={"link"} key={category} className="pl-0">
-                <Link to={`/community?topic=${category}`}>{category}</Link>
+            {loaderData.topics.map((topic) => (
+              <Button
+                asChild
+                variant={"link"}
+                key={topic.slug}
+                className="pl-0"
+              >
+                <Link to={`/community?topic=${topic.slug}`}>{topic.name}</Link>
               </Button>
             ))}
           </div>
