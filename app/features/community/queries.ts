@@ -54,6 +54,7 @@ export const getTopics = async () => {
   return data;
 };
 
+/*
 export const getPosts = async () => {
   const { data, error } = await client.from("posts").select(`
       post_id,
@@ -71,6 +72,20 @@ export const getPosts = async () => {
         count
       )
   `);
+
+  if (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+*/
+
+export const getPosts = async () => {
+  const { data, error } = await client
+    .from("community_post_list_view")
+    .select("*");
 
   if (error) {
     console.error(error);
