@@ -25,7 +25,7 @@ export const meta: Route.MetaFunction = () => {
 export const loader = async () => {
   // const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
 
-  const topics = await getTopics();
+  const topics = getTopics();
   const posts = getPosts();
 
   return { topics, posts };
@@ -43,6 +43,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sorting = searchParams.get("sorting") || "newest";
   const period = searchParams.get("period") || "all";
+
   return (
     <div className="space-y-20">
       <Hero
@@ -143,18 +144,30 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
           <span className="text-sm font-bold text-muted-foreground uppercase">
             Topics
           </span>
-          <div className="flex flex-col gap-2 items-start">
-            {topics.map((topic) => (
-              <Button
-                asChild
-                variant={"link"}
-                key={topic.slug}
-                className="pl-0"
-              >
-                <Link to={`/community?topic=${topic.slug}`}>{topic.name}</Link>
-              </Button>
-            ))}
-          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Await resolve={topics}>
+              {(data) => {
+                return (
+                  <div className="space-y-5">
+                    {data.map((topic) => {
+                      return (
+                        <Button
+                          asChild
+                          variant={"link"}
+                          key={topic.slug}
+                          className="pl-0"
+                        >
+                          <Link to={`/community?topic=${topic.slug}`}>
+                            {topic.name}
+                          </Link>
+                        </Button>
+                      );
+                    })}
+                  </div>
+                );
+              }}
+            </Await>
+          </Suspense>
         </aside>
       </div>
     </div>

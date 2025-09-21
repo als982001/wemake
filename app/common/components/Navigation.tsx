@@ -172,7 +172,7 @@ export default function Navigation({
               <NavigationMenuItem key={menu.name}>
                 {menu.items ? (
                   <>
-                    <Link to={menu.to}>
+                    <Link to={menu.to} prefetch="intent">
                       <NavigationMenuTrigger>{menu.name}</NavigationMenuTrigger>
                     </Link>
                     <NavigationMenuContent>
@@ -193,6 +193,7 @@ export default function Navigation({
                                   className="p-3 space-y-1 block leading-none no-underline outline-none"
                                   to={item.to}
                                 >
+                                  ㄱ
                                   <span className="text-sm font-medium leading-none">
                                     {item.name}
                                   </span>
