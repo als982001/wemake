@@ -23,11 +23,19 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export const loader = async () => {
+  // const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
+
   const topics = await getTopics();
   const posts = getPosts();
 
   return { topics, posts };
 };
+
+/* export const clientLoader = async ({
+  serverLoader,
+}: Route.ClientLoaderArgs) => {
+  //track analytics
+}; */
 
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const { topics, posts } = loaderData;
