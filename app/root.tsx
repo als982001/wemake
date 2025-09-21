@@ -6,12 +6,14 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   useLocation,
+  useNavigation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 // import stylesheet from "./app.css?url";
 import Navigation from "./common/components/Navigation";
+import { cn } from "./lib/utils";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,8 +50,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const { pathname } = useLocation();
 
+  // const navigation = useNavigation();
+  const { state } = useNavigation();
+  const isLoading = state === "loading";
+
+  const isNotAuthPage = !pathname.includes("/auth/");
+
   return (
-    <div className={pathname.includes("/auth/") ? "" : "py-28 px-5 md:px-20"}>
+    <div
+      className={cn({
+        "py-28 px-5 md:px-20": isNotAuthPage,
+        "transition-opacity animate-pulse": isLoading,
+      })}
+    >
       {pathname.includes("/auth") ? null : (
         <Navigation
           isLoggedIn={true} // 임시
