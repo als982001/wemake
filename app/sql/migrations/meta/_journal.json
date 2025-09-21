@@ -50,6 +50,13 @@
       "when": 1757234956967,
       "tag": "0006_silent_sentinel",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1758440733909,
+      "tag": "0007_orange_sir_ram",
+      "breakpoints": true
     }
   ]
 }
