@@ -1,14 +1,15 @@
-import { data, isRouteErrorResponse, Link } from "react-router";
+import { Link, data, isRouteErrorResponse } from "react-router";
 
 import { DateTime } from "luxon";
 import { z } from "zod";
-
-import type { Route } from "./+types/daily-leaderboard-page";
-
 import { Hero } from "~/common/components/hero";
-import { ProductCard } from "../components/product-card";
-import { Button } from "~/common/components/ui/button";
 import ProductPagination from "~/common/components/product-pagination";
+import { Button } from "~/common/components/ui/button";
+
+import { ProductCard } from "../components/product-card";
+import { PAGE_SIZE } from "../constants";
+import { getProductPagesByDateRange, getProductsByDateRange } from "../queries";
+import type { Route } from "./+types/daily-leaderboard-page";
 
 const paramsSchema = z.object({
   year: z.coerce.number(),
@@ -38,10 +39,8 @@ export const meta: Route.MetaFunction = ({ params }) => {
   ];
 };
 
-export const loader = ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { success, data: parsedData } = paramsSchema.safeParse(params);
-
-  console.log({ success, parsedData, params });
 
   if (!success) {
     throw data(
@@ -52,8 +51,6 @@ export const loader = ({ params }: Route.LoaderArgs) => {
 
   const date = DateTime.fromObject(parsedData).setZone("Asia/Seoul");
 
-  console.log("date", date);
-
   if (!date.isValid) {
     throw data(
       { error_code: "invalid_date", message: "Invalid date" },
@@ -63,8 +60,6 @@ export const loader = ({ params }: Route.LoaderArgs) => {
 
   const today = DateTime.now().setZone("Asia/Seoul").startOf("day");
 
-  console.log("today", today);
-
   if (date > today) {
     throw data(
       { error_code: "future_date", message: "Future date" },
@@ -72,13 +67,31 @@ export const loader = ({ params }: Route.LoaderArgs) => {
     );
   }
 
-  return { ...parsedData };
+  const url = new URL(request.url);
+
+  const startDate = date.startOf("day");
+  const endDate = date.endOf("day");
+
+  const products = await getProductsByDateRange({
+    startDate,
+    endDate,
+    limit: PAGE_SIZE,
+    page: Number(url.searchParams.get("page") || 1),
+  });
+
+  const totalPages = await getProductPagesByDateRange({
+    startDate,
+    endDate,
+  });
+
+  return { products, totalPages, ...parsedData };
 };
 
 export default function DailyLeaderboardPage({
   loaderData,
 }: Route.ComponentProps) {
-  console.log("loaderData", loaderData);
+  const { products, totalPages } = loaderData;
+
   const urlDate = DateTime.fromObject({
     year: loaderData.year,
     month: loaderData.month,
@@ -114,19 +127,19 @@ export default function DailyLeaderboardPage({
         ) : null}
       </div>
       <div className="space-y-5 w-full max-w-screen-md mx-auto">
-        {Array.from({ length: 11 }).map((_, index) => (
+        {products.map((product) => (
           <ProductCard
-            key={`productId-${index}`}
-            id={`productId-${index}`}
-            name="Product Name"
-            description="Product Description"
-            commentsCount={12}
-            viewsCount={12}
-            votesCount={120}
+            key={product.product_id}
+            id={String(product.product_id)}
+            name={product.name}
+            description={product.description}
+            reviewsCount={product.reviews}
+            viewsCount={product.views}
+            votesCount={product.upvotes}
           />
         ))}
       </div>
-      <ProductPagination totalPages={10} />
+      <ProductPagination totalPages={totalPages} />
     </div>
   );
 }

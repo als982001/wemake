@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router";
+
 import {
   Pagination,
   PaginationContent,
@@ -21,7 +22,7 @@ export default function ProductPagination({
 
   const onClick = (page: number) => {
     searchParams.set("page", page.toString());
-    setSearchParams(searchParams);
+    setSearchParams(searchParams, { preventScrollReset: true });
   };
 
   const getUrlWithPage = (page: number) => {
