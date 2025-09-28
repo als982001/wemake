@@ -1,12 +1,15 @@
 import { Link, type MetaFunction } from "react-router";
 
+import { DateTime } from "luxon";
 import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/JobCard";
 import { ProductCard } from "~/features/products/components/product-card";
+import { getProductsByDateRange } from "~/features/products/queries";
 import { TeamCard } from "~/features/teams/components/TeamCard";
 
 import { Button } from "../components/ui/button";
+import type { Route } from "./+types/home-page";
 
 export const meta: MetaFunction = () => {
   return [
@@ -18,7 +21,19 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function HomePage() {
+export const loader = async () => {
+  const products = await getProductsByDateRange({
+    startDate: DateTime.now().startOf("day"),
+    endDate: DateTime.now().endOf("day"),
+    limit: 7,
+  });
+
+  return { products };
+};
+
+export default function HomePage({ loaderData }: Route.ComponentProps) {
+  const { products } = loaderData;
+
   return (
     <div className="space-y-40">
       <div className="grid grid-cols-3 gap-4">
@@ -33,16 +48,16 @@ export default function HomePage() {
             <Link to="/products/leaderboards">Explore all products &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => {
+        {products.map((product) => {
           return (
             <ProductCard
-              key={`productId-${index}`}
-              id={`productId-${index}`}
-              name="Product Name"
-              description="Product Description"
-              commentsCount={12}
-              viewsCount={123}
-              votesCount={123}
+              key={product.product_id}
+              id={product.product_id.toString()}
+              name={product.name}
+              description={product.description}
+              reviewsCount={product.reviews}
+              viewsCount={product.views}
+              votesCount={product.upvotes}
             />
           );
         })}

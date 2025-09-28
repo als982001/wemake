@@ -193,7 +193,6 @@ export default function Navigation({
                                   className="p-3 space-y-1 block leading-none no-underline outline-none"
                                   to={item.to}
                                 >
-                                  ㄱ
                                   <span className="text-sm font-medium leading-none">
                                     {item.name}
                                   </span>

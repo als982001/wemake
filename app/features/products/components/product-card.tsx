@@ -1,5 +1,6 @@
-import { ChevronUpIcon, EyeIcon, MessageCircle } from "lucide-react";
 import { Link } from "react-router";
+
+import { ChevronUpIcon, EyeIcon, MessageCircle } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
 import {
   Card,
@@ -13,16 +14,16 @@ interface IProductCardProps {
   id: string;
   name: string;
   description: string;
-  commentsCount: number;
-  viewsCount: number;
-  votesCount: number;
+  reviewsCount: string;
+  viewsCount: string;
+  votesCount: string;
 }
 
 export function ProductCard({
   id,
   name,
   description,
-  commentsCount,
+  reviewsCount,
   viewsCount,
   votesCount,
 }: IProductCardProps) {
@@ -39,7 +40,7 @@ export function ProductCard({
           <div className="flex items-center gap-4 mt-2">
             <div className="flex items-center gap-px text-xs text-muted-foreground">
               <MessageCircle className="w-4 h-4" />
-              <span>{commentsCount}</span>
+              <span>{reviewsCount}</span>
             </div>
             <div className="flex items-center gap-px text-xs text-muted-foreground">
               <EyeIcon className="w-4 h-4" />
