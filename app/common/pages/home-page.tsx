@@ -2,6 +2,7 @@ import { Link, type MetaFunction } from "react-router";
 
 import { DateTime } from "luxon";
 import { PostCard } from "~/features/community/components/post-card";
+import { getPosts } from "~/features/community/queries";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/JobCard";
 import { ProductCard } from "~/features/products/components/product-card";
@@ -28,7 +29,9 @@ export const loader = async () => {
     limit: 7,
   });
 
-  return { products };
+  const posts = await getPosts({ limit: 7, sorting: "newest" });
+
+  return { products, posts };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -74,15 +77,16 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/community">Explore all discussions &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.posts.map((post) => (
           <PostCard
-            key={`postId-${index}`}
-            id={index}
-            title="What is the best productivity tool?"
-            author="Nico"
-            authorAvatarUrl="https://github.com/apple.png"
-            category="Productivity"
-            postedAt="12 hours ago"
+            key={post.post_id}
+            id={post.post_id}
+            title={post.title}
+            author={post.author}
+            authorAvatarUrl={post.author_avatar}
+            category={post.topic}
+            postedAt={post.created_at}
+            votesCount={post.upvotes}
           />
         ))}
       </div>

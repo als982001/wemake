@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 
-import { Await, Form, Link, useSearchParams } from "react-router";
+import { Await, Form, Link, data, useSearchParams } from "react-router";
 
 import { ChevronDownIcon } from "lucide-react";
+import { z } from "zod";
 import { Hero } from "~/common/components/hero";
 import { Button } from "~/common/components/ui/button";
 import {
@@ -18,16 +19,55 @@ import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
 import { getPosts, getTopics } from "../queries";
 import type { Route } from "./+types/community-page";
 
+const NEWEST = "newest";
+const POPULAR = "popular";
+
+const ALL = "all";
+const TODAY = "today";
+const WEEK = "week";
+const MONTH = "month";
+const YEAR = "year";
+
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | wemake" }];
 };
 
-export const loader = async () => {
+const searchParamsSchema = z.object({
+  sorting: z.enum([NEWEST, POPULAR]).optional().default(NEWEST),
+  period: z.enum([ALL, TODAY, WEEK, MONTH, YEAR]).optional().default(ALL),
+  keyword: z.string().optional(),
+  topic: z.string().optional(),
+});
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
   // const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
 
-  const topics = getTopics();
-  const posts = getPosts();
+  const url = new URL(request.url);
 
+  const { success, data: parsedData } = searchParamsSchema.safeParse(
+    Object.fromEntries(url.searchParams)
+  );
+
+  if (!success) {
+    throw data(
+      {
+        error_code: "invalid_search_params",
+        message: "Invalid search params",
+      },
+      { status: 400 }
+    );
+  }
+
+  const [topics, posts] = await Promise.all([
+    getTopics(),
+    getPosts({
+      limit: 20,
+      sorting: parsedData.sorting,
+      period: parsedData.period,
+      keyword: parsedData.keyword,
+      topic: parsedData.topic,
+    }),
+  ]);
   return { topics, posts };
 };
 
@@ -105,7 +145,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
               <Form className="w-2/3">
                 <Input
                   type="text"
-                  name="search"
+                  name="keyword"
                   placeholder="Search for discussions"
                 />
               </Form>
