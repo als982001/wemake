@@ -72,20 +72,26 @@ export default function JobsPage({ loaderData }: Route.ComponentProps) {
       <Hero title="Jobs" subtitle="Companies looking for makers" />
       <div className="grid grid-cols-1 xl:grid-cols-6 gap-20 items-start">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:col-span-4 gap-5">
-          {jobs.map((job) => (
-            <JobCard
-              key={job.job_id}
-              id={job.job_id}
-              company={job.company_name}
-              companyLogoUrl={job.company_logo}
-              companyHq={job.company_location}
-              title={job.position}
-              postedAt={job.created_at}
-              type={job.job_type}
-              positionLocation={job.location}
-              salary={job.salary_range}
-            />
-          ))}
+          {jobs && jobs.length > 0 ? (
+            <>
+              {jobs.map((job) => (
+                <JobCard
+                  key={job.job_id}
+                  id={job.job_id}
+                  company={job.company_name}
+                  companyLogoUrl={job.company_logo}
+                  companyHq={job.company_location}
+                  title={job.position}
+                  postedAt={job.created_at}
+                  type={job.job_type}
+                  positionLocation={job.location}
+                  salary={job.salary_range}
+                />
+              ))}
+            </>
+          ) : (
+            <>조건에 해당하는 jobs가 없습니다.</>
+          )}
         </div>
         <div className="col-span-2 sticky top-20 flex flex-col gap-10">
           <div className="flex flex-col items-start gap-2.5">
