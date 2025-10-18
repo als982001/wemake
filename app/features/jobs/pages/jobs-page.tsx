@@ -63,6 +63,10 @@ export default function JobsPage({ loaderData }: Route.ComponentProps) {
     setSearchParams(searchParams);
   };
 
+  const resetFilter = () => {
+    setSearchParams({});
+  };
+
   return (
     <div className="space-y-20">
       <Hero title="Jobs" subtitle="Companies looking for makers" />
@@ -136,6 +140,19 @@ export default function JobsPage({ loaderData }: Route.ComponentProps) {
                   {range}
                 </Button>
               ))}
+            </div>
+          </div>
+          <div className="flex flex-col items-start gap-2.5">
+            <h4 className="text-sm text-muted-foreground font-bold">초기화</h4>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={"outline"}
+                onClick={() => resetFilter()}
+                className=""
+                disabled={searchParams.size === 0}
+              >
+                {"초기화"}
+              </Button>
             </div>
           </div>
         </div>
