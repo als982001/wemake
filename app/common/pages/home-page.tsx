@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import { PostCard } from "~/features/community/components/post-card";
 import { getPosts } from "~/features/community/queries";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
+import { getGptIdeas } from "~/features/ideas/queries";
 import { JobCard } from "~/features/jobs/components/JobCard";
 import { ProductCard } from "~/features/products/components/product-card";
 import { getProductsByDateRange } from "~/features/products/queries";
@@ -31,11 +32,13 @@ export const loader = async () => {
 
   const posts = await getPosts({ limit: 7, sorting: "newest" });
 
-  return { products, posts };
+  const ideas = await getGptIdeas({ limit: 7 });
+
+  return { products, posts, ideas };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
-  const { products } = loaderData;
+  const { products, posts, ideas } = loaderData;
 
   return (
     <div className="space-y-40">
@@ -77,7 +80,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/community">Explore all discussions &rarr;</Link>
           </Button>
         </div>
-        {loaderData.posts.map((post) => (
+        {posts.map((post) => (
           <PostCard
             key={post.post_id}
             id={post.post_id}
@@ -102,15 +105,15 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/ideas">Explore all ideas &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 5 }).map((_, index) => (
+        {ideas.map((idea) => (
           <IdeaCard
-            key={`ideaId-${index}`}
-            id={`ideaId-${index}`}
-            title="A startup that creates an AI-powered generated personal trainer, delivering customized fitness recommendations and tracking of progress using a mobile app to track workouts and progress as well as a website to manage the business."
-            viewsCount={123}
-            postedAt="12 hours ago"
-            likesCount={12}
-            claimed={index % 2 === 0}
+            key={idea.gpt_idea_id}
+            id={idea.gpt_idea_id}
+            title={idea.idea}
+            viewsCount={idea.views}
+            postedAt={idea.created_at}
+            likesCount={idea.likes}
+            claimed={idea.is_claimed}
           />
         ))}
       </div>

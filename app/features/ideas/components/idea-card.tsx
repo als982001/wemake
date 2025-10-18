@@ -1,6 +1,8 @@
 import { Link } from "react-router";
-import { DotIcon, EyeIcon, HeartIcon, LockIcon } from "lucide-react";
 
+import { DotIcon, EyeIcon, HeartIcon, LockIcon } from "lucide-react";
+import { DateTime } from "luxon";
+import { Button } from "~/common/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,11 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "~/common/components/ui/card";
-import { Button } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
 
 interface IdeaCardProps {
-  id: string;
+  id: number;
   title: string;
   viewsCount: number;
   postedAt: string;
@@ -51,7 +52,7 @@ export function IdeaCard({
           <span>{viewsCount}</span>
         </div>
         <DotIcon className="w-4 h-4" />
-        <span>{postedAt}</span>
+        <span>{DateTime.fromISO(postedAt).toRelative()}</span>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
         <Button variant="outline">
