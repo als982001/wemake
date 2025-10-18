@@ -6,6 +6,7 @@ import { getPosts } from "~/features/community/queries";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { getGptIdeas } from "~/features/ideas/queries";
 import { JobCard } from "~/features/jobs/components/JobCard";
+import { getJobs } from "~/features/jobs/queries";
 import { ProductCard } from "~/features/products/components/product-card";
 import { getProductsByDateRange } from "~/features/products/queries";
 import { TeamCard } from "~/features/teams/components/TeamCard";
@@ -34,11 +35,13 @@ export const loader = async () => {
 
   const ideas = await getGptIdeas({ limit: 7 });
 
-  return { products, posts, ideas };
+  const jobs = await getJobs({ limit: 11 });
+
+  return { products, posts, ideas, jobs };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
-  const { products, posts, ideas } = loaderData;
+  const { products, posts, ideas, jobs } = loaderData;
 
   return (
     <div className="space-y-40">
@@ -129,18 +132,18 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/jobs">Explore all jobs &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {jobs.map((job) => (
           <JobCard
-            key={`jobId-${index}`}
-            id={`jobId-${index}`}
-            company="Tesla"
-            companyLogoUrl="https://github.com/facebook.png"
-            companyHq="San Francisco, CA"
-            title="Software Engineer"
-            postedAt="12 hours ago"
-            type="Full-time"
-            positionLocation="Remote"
-            salary="$100,000 - $120,000"
+            key={job.job_id}
+            id={job.job_id}
+            company={job.company_name}
+            companyLogoUrl={job.company_logo}
+            companyHq={job.company_location}
+            title={job.position}
+            postedAt={job.created_at}
+            type={job.job_type}
+            positionLocation={job.location}
+            salary={job.salary_range}
           />
         ))}
       </div>
