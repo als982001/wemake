@@ -7,8 +7,10 @@ import {
   pgTable,
   text,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
 
+import { profiles } from "../users/schema";
 import { PRODUCT_STAGES } from "./constants";
 
 export const productStage = pgEnum(
@@ -17,7 +19,7 @@ export const productStage = pgEnum(
 );
 
 export const team = pgTable(
-  "team",
+  "teams",
   {
     team_id: bigint({ mode: "number" })
       .primaryKey()
@@ -28,6 +30,11 @@ export const team = pgTable(
     product_stage: productStage().notNull(),
     roles: text().notNull(),
     product_description: text().notNull(),
+    team_leader_id: uuid()
+      .references(() => profiles.profile_id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     created_at: timestamp().notNull().defaultNow(),
     updated_at: timestamp().notNull().defaultNow(),
   },
