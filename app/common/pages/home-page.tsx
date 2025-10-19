@@ -10,6 +10,7 @@ import { getJobs } from "~/features/jobs/queries";
 import { ProductCard } from "~/features/products/components/product-card";
 import { getProductsByDateRange } from "~/features/products/queries";
 import { TeamCard } from "~/features/teams/components/TeamCard";
+import { getTeams } from "~/features/teams/queries";
 
 import { Button } from "../components/ui/button";
 import type { Route } from "./+types/home-page";
@@ -37,11 +38,13 @@ export const loader = async () => {
 
   const jobs = await getJobs({ limit: 11 });
 
-  return { products, posts, ideas, jobs };
+  const teams = await getTeams({ limit: 7 });
+
+  return { products, posts, ideas, jobs, teams };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
-  const { products, posts, ideas, jobs } = loaderData;
+  const { products, posts, ideas, jobs, teams } = loaderData;
 
   return (
     <div className="space-y-40">
@@ -161,18 +164,14 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </Link>
           </Button>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {teams.map((team) => (
           <TeamCard
-            key={`teamId-${index}`}
-            id={`teamId-${index}`}
-            leaderUsername="lynn"
-            leaderAvatarUrl="https://github.com/inthetiger.png"
-            positions={[
-              "React Developer",
-              "Backend Developer",
-              "Product Manager",
-            ]}
-            projectDescription="a new social media platform"
+            key={team.team_id}
+            id={team.team_id}
+            leaderUsername={team.team_leader.username}
+            leaderAvatarUrl={team.team_leader.avatar}
+            positions={team.roles.split(",")}
+            projectDescription={team.product_description}
           />
         ))}
       </div>

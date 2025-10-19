@@ -1,6 +1,6 @@
 {
-  "id": "0ac9ee30-be2c-4e95-8bbf-9541d2585a63",
-  "prevId": "eaa107a3-b781-44b9-8464-081ca9ac154c",
+  "id": "7d55f624-6ec2-48ee-92e1-0d62023354bf",
+  "prevId": "7bcdc951-ca70-4c47-b5ca-007a9d89ec99",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -984,6 +984,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "team_leader_id": {
+          "name": "team_leader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -1000,7 +1006,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "teams_team_leader_id_profiles_profile_id_fk": {
+          "name": "teams_team_leader_id_profiles_profile_id_fk",
+          "tableFrom": "teams",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "team_leader_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

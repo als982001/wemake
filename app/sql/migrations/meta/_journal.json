@@ -64,6 +64,20 @@
       "when": 1759045996727,
       "tag": "0008_graceful_nicolaos",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1760859257584,
+      "tag": "0009_late_blade",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1760859608718,
+      "tag": "0010_sticky_viper",
+      "breakpoints": true
     }
   ]
 }
