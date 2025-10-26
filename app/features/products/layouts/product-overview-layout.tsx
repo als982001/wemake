@@ -4,26 +4,60 @@ import { ChevronUpIcon, StarIcon } from "lucide-react";
 import { Button, buttonVariants } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
 
-export default function ProductOverviewLayout() {
+import { getProductById } from "../queries";
+import type { Route } from "./+types/product-overview-layout";
+
+export function meta({ data }: Route.MetaArgs) {
+  return [
+    { title: `${data.product.name} Overview | wemake` },
+    { name: "description", content: "View product details and information" },
+  ];
+}
+
+export const loader = async ({
+  params,
+}: Route.LoaderArgs & { params: { productId: string } }) => {
+  const product = await getProductById(params.productId);
+
+  return { product };
+};
+
+export default function ProductOverviewLayout({
+  loaderData,
+}: Route.ComponentProps) {
+  const { product } = loaderData;
+
   return (
     <div className="space-y-10">
       <div className="flex justify-between">
         <div className="flex gap-10">
-          <div className="size-40 rounded-xl shadow-xl bg-primary/50"></div>
+          <div className="size-40 rounded-xl shadow-xl bg-primary/50">
+            <img
+              src={product.icon}
+              alt={product.name}
+              className="size-full object-cover"
+            />
+          </div>
           <div>
-            <h1 className="text-5xl font-bold">Product Name</h1>
-            <p className="text-2xl font-light">Product Description</p>
+            <h1 className="text-5xl font-bold">{product.name}</h1>
+            <p className=" text-2xl font-light">{product.tagline}</p>
             <div className="mt-5 flex item-center gap-2">
               <div className="flex text-yellow-400">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon
                     key={i}
                     className="size-4"
-                    fill={i < 3 ? "currentColor" : "none"}
+                    fill={
+                      i < Math.floor(product.average_rating)
+                        ? "currentColor"
+                        : "none"
+                    }
                   />
                 ))}
               </div>
-              <span className="text-muted-foreground">100 reviews</span>
+              <span className="text-muted-foreground ">
+                {product.reviews} reviews
+              </span>
             </div>
           </div>
         </div>
@@ -37,7 +71,7 @@ export default function ProductOverviewLayout() {
           </Button>
           <Button size="lg" className="text-lg h-14 px-10">
             <ChevronUpIcon className="size-4" />
-            Upvote (100)
+            Upvote ({product.upvotes})
           </Button>
         </div>
       </div>
@@ -50,7 +84,7 @@ export default function ProductOverviewLayout() {
               isActive && "bg-accent text-foreground "
             )
           }
-          to={`/products/1/overview`}
+          to={`/products/${product.product_id}/overview`}
         >
           Overview
         </NavLink>
@@ -61,13 +95,20 @@ export default function ProductOverviewLayout() {
               isActive && "bg-accent text-foreground "
             )
           }
-          to={`/products/1/reviews`}
+          to={`/products/${product.product_id}/reviews`}
         >
           Reviews
         </NavLink>
       </div>
       <div>
-        <Outlet /> {/* Outlet을 통해 하위 라우트가 렌더링된다 */}
+        <Outlet
+          context={{
+            product_id: product.product_id,
+            description: product.description,
+            how_it_works: product.how_it_works,
+          }}
+        />
+        {/* Outlet을 통해 하위 라우트가 렌더링된다 */}
       </div>
     </div>
   );
