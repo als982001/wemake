@@ -1,3 +1,5 @@
+import { dateMatchModifiers } from "react-day-picker";
+
 import { z } from "zod";
 import { Hero } from "~/common/components/hero";
 import ProductPagination from "~/common/components/product-pagination";
@@ -27,7 +29,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const page = Number(url.searchParams.get("page") || 1);
 
   const { data, success } = paramSchema.safeParse(params);
-  console.log("data", data);
+  console.log("data", dateMatchModifiers);
 
   if (!success) throw new Response("Invalid category", { status: 400 });
 
@@ -55,7 +57,7 @@ export default function CategoryPage({ loaderData }: Route.ComponentProps) {
             key={product.product_id}
             id={product.product_id}
             name={product.name}
-            description={product.description}
+            description={product.tagline}
             reviewsCount={product.reviews}
             viewsCount={product.views}
             votesCount={product.upvotes}

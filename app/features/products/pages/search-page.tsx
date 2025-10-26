@@ -1,14 +1,14 @@
 import { Form } from "react-router";
+
 import { z } from "zod";
-
-import type { Route } from "./+types/search-page";
-
 import { Hero } from "~/common/components/hero";
-import { Input } from "~/common/components/ui/input";
-import { Button } from "~/common/components/ui/button";
 import ProductPagination from "~/common/components/product-pagination";
+import { Button } from "~/common/components/ui/button";
+import { Input } from "~/common/components/ui/input";
 
 import { ProductCard } from "../components/product-card";
+import { getPagesBySearch, getProductsBySearch } from "../queries";
+import type { Route } from "./+types/search-page";
 
 export const meat: Route.MetaFunction = () => {
   return [
@@ -17,26 +17,41 @@ export const meat: Route.MetaFunction = () => {
   ];
 };
 
-const paramsSchema = z.object({
+const searchParams = z.object({
   query: z.string().optional().default(""),
   page: z.coerce.number().optional().default(1),
 });
 
-export function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
   console.log({ params, request });
 
   const url = new URL(request.url);
 
-  const { success, data: parsedData } = paramsSchema.safeParse(
+  const { success, data: parsedData } = searchParams.safeParse(
     Object.fromEntries(url.searchParams)
   );
 
   if (!success) {
     throw new Error("Invalid params");
   }
+
+  if (parsedData.query === "") {
+    return { products: [], totalPages: 1 };
+  }
+
+  const products = await getProductsBySearch({
+    query: parsedData.query,
+    page: parsedData.page,
+  });
+
+  const totalPages = await getPagesBySearch({ query: parsedData.query });
+
+  return { products, totalPages };
 }
 
 export default function SearchPage({ loaderData }: Route.ComponentProps) {
+  const { products, totalPages } = loaderData;
+
   return (
     <div className="space-y-10">
       <Hero
@@ -53,19 +68,19 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
       </Form>
       <div className="space-y-5 w-full max-w-screen-md mx-auto">
         Add commentMore actions
-        {Array.from({ length: 11 }).map((_, index) => (
+        {products.map((product) => (
           <ProductCard
-            key={`productId-${index}`}
-            id={`productId-${index}`}
-            name="Product Name"
-            description="Product Description"
-            commentsCount={12}
-            viewsCount={12}
-            votesCount={120}
+            key={product.product_id}
+            id={product.product_id}
+            name={product.name}
+            description={product.tagline}
+            reviewsCount={product.reviews}
+            viewsCount={product.views}
+            votesCount={product.upvotes}
           />
         ))}
       </div>
-      <ProductPagination totalPages={10} />
+      <ProductPagination totalPages={loaderData.totalPages} />
     </div>
   );
 }
