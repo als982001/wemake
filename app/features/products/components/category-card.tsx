@@ -1,10 +1,10 @@
 import { Link } from "react-router";
-import { ChevronRightIcon } from "lucide-react";
 
+import { ChevronRightIcon } from "lucide-react";
 import { Card, CardDescription, CardTitle } from "~/common/components/ui/card";
 
 interface CategoryCardProps {
-  id: string;
+  id: string | number;
   name: string;
   description: string;
 }

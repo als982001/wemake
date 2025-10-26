@@ -11,7 +11,7 @@ import {
 } from "~/common/components/ui/card";
 
 interface IProductCardProps {
-  id: string;
+  id: number | string;
   name: string;
   description: string;
   reviewsCount: string;
