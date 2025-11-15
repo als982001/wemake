@@ -19,7 +19,7 @@ import { Button } from "~/common/components/ui/button";
 import { Textarea } from "~/common/components/ui/textarea";
 import { Reply } from "~/features/community/components/reply";
 
-import { getPostById } from "../queries";
+import { getPostById, getReplies } from "../queries";
 import type { Route } from "./+types/post-page";
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -28,12 +28,13 @@ export const meta: Route.MetaFunction = ({ params }) => {
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const post = await getPostById(params.postId);
+  const replies = await getReplies(params.postId);
 
-  return { post };
+  return { post, replies };
 };
 
 export default function PostPage({ loaderData }: Route.ComponentProps) {
-  const { post } = loaderData;
+  const { post, replies } = loaderData;
 
   return (
     <div className="space-y-10">
@@ -96,13 +97,16 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
               <div className="space-y-10">
                 <h4 className="font-semibold">{post.replies} Replies</h4>
                 <div className="flex flex-col gap-5">
-                  <Reply
-                    username="Nicolas"
-                    avatarUrl="https://github.com/serranoarevalo.png"
-                    content="I've been using Todoist for a while now, and it's really great. It's simple, easy to use, and has a lot of features."
-                    timestamp="12 hours ago"
-                    topLevel
-                  />
+                  {replies.map((reply) => (
+                    <Reply
+                      username={reply.user.name}
+                      avatarUrl={reply.user.avatar}
+                      content={reply.reply}
+                      timestamp={reply.created_at}
+                      topLevel={true}
+                      replies={reply.post_replies}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
