@@ -106,6 +106,7 @@ export default function ProductOverviewLayout({
             product_id: product.product_id,
             description: product.description,
             how_it_works: product.how_it_works,
+            review_count: loaderData.product.reviews,
           }}
         />
         {/* Outlet을 통해 하위 라우트가 렌더링된다 */}

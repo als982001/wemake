@@ -1,9 +1,12 @@
-import type { Route } from "./+types/product-reviews-page";
+import { useOutletContext } from "react-router";
 
 import { Button } from "~/common/components/ui/button";
-import { ReviewCard } from "../components/review-card";
 import { Dialog, DialogTrigger } from "~/common/components/ui/dialog";
+
 import CreateReviewDialog from "../components/create-review-dialog";
+import { ReviewCard } from "../components/review-card";
+import { getReviews } from "../queries";
+import type { Route } from "./+types/product-reviews-page";
 
 export function meta() {
   return [
@@ -12,7 +15,19 @@ export function meta() {
   ];
 }
 
-export default function ProductReviewsPage() {
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const reviews = await getReviews(params.productId);
+
+  return { reviews };
+};
+
+export default function ProductReviewsPage({
+  loaderData,
+}: Route.ComponentProps) {
+  const { reviews } = loaderData;
+
+  const { review_count } = useOutletContext<{ review_count: string }>();
+
   return (
     <Dialog>
       <div className="space-y-10 max-w-xl">
@@ -23,14 +38,15 @@ export default function ProductReviewsPage() {
           </DialogTrigger>
         </div>
         <div className="space-y-20">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {reviews.map((review) => (
             <ReviewCard
-              username="John Doe"
-              handle="@username"
-              avatarUrl="https://github.com/facebook.png"
-              rating={5}
-              content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
-              postedAt="10 days ago"
+              key={review.review_id}
+              username={review.user.name}
+              handle={review.user.username}
+              avatarUrl={review.user.avatar}
+              rating={review.rating}
+              content={review.review}
+              postedAt={review.created_at}
             />
           ))}
         </div>
