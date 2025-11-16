@@ -3,7 +3,7 @@ import client from "~/supa-client";
 
 import { PAGE_SIZE } from "./constants";
 
-const productListSelect = `
+export const productListSelect = `
         product_id,
         name,
         tagline,
