@@ -85,6 +85,13 @@
       "when": 1763278826993,
       "tag": "0011_lazy_professor_monster",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1763280853047,
+      "tag": "0012_rare_trauma",
+      "breakpoints": true
     }
   ]
 }

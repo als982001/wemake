@@ -51,6 +51,7 @@ export default [
           route("/new", "features/products/pages/new-product-review-page.tsx"),
         ]),
       ]),
+      route("/visit", "features/products/pages/product-visit-page.tsx"),
     ]),
   ]),
   ...prefix("/ideas", [
