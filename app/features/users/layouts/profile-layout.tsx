@@ -21,6 +21,10 @@ import { cn } from "~/lib/utils";
 import { getUserProfile } from "../queries";
 import type { Route } from "./+types/profile-layout";
 
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [{ title: `${data.user.name} | wemake` }];
+};
+
 export const loader = async ({
   params,
 }: Route.LoaderArgs & { params: { username: string } }) => {
