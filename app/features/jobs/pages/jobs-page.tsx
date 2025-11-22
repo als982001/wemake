@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Hero } from "~/common/components/hero";
 import { Button } from "~/common/components/ui/button";
 import { cn } from "~/lib/utils";
+import { makeSSRClient } from "~/supa-client";
 
 import { JobCard } from "../components/JobCard";
 import { JOB_TYPES, LOCATION_TYPES, SALARY_RANGE } from "../constants";
@@ -44,7 +45,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     );
   }
 
-  const jobs = await getJobs({
+  const { client, headers } = makeSSRClient(request);
+  const jobs = await getJobs(client, {
     limit: 40,
     location: parsedData.location,
     type: parsedData.type,

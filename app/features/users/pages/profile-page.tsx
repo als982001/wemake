@@ -1,10 +1,12 @@
 import { useOutletContext } from "react-router";
 
-import client from "~/supa-client";
+import { makeSSRClient } from "~/supa-client";
 
 import type { Route } from "./+types/profile-page";
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
+
   await client.rpc("track_event", {
     event_type: "profile_view",
     event_data: {

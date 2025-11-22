@@ -1,8 +1,12 @@
-import client from "~/supa-client";
+import { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "~/supa-client";
 
 const QUERY_NAME = "gpt_ideas_view";
 
-export const getGptIdeas = async ({ limit }: { limit: number }) => {
+export const getGptIdeas = async (
+  client: SupabaseClient<Database, "public", any>,
+  { limit }: { limit: number }
+) => {
   const { data, error } = await client
     .from(QUERY_NAME)
     .select("*")
@@ -16,7 +20,10 @@ export const getGptIdeas = async ({ limit }: { limit: number }) => {
   return data;
 };
 
-export const getGptIdea = async (ideaId: string) => {
+export const getGptIdea = async (
+  client: SupabaseClient<Database, "public", any>,
+  { ideaId }: { ideaId: string }
+) => {
   const { data, error } = await client
     .from(QUERY_NAME)
     .select("*")

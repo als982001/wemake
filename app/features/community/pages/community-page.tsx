@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "~/common/components/ui/dropdown-menu";
 import { Input } from "~/common/components/ui/input";
+import { makeSSRClient } from "~/supa-client";
 
 import { PostCard } from "../components/post-card";
 import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
@@ -58,9 +59,11 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     );
   }
 
+  const { client, headers } = makeSSRClient(request);
+
   const [topics, posts] = await Promise.all([
-    getTopics(),
-    getPosts({
+    getTopics(client),
+    getPosts(client, {
       limit: 20,
       sorting: parsedData.sorting,
       period: parsedData.period,

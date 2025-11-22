@@ -18,6 +18,7 @@ import {
 import { Button } from "~/common/components/ui/button";
 import { Textarea } from "~/common/components/ui/textarea";
 import { Reply } from "~/features/community/components/reply";
+import { makeSSRClient } from "~/supa-client";
 
 import { getPostById, getReplies } from "../queries";
 import type { Route } from "./+types/post-page";
@@ -26,9 +27,10 @@ export const meta: Route.MetaFunction = ({ params }) => {
   return [{ title: `${params.postId} | wemake` }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const post = await getPostById(params.postId);
-  const replies = await getReplies(params.postId);
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
+  const post = await getPostById(client, { postId: params.postId });
+  const replies = await getReplies(client, { postId: params.postId });
 
   return { post, replies };
 };
@@ -99,12 +101,13 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
                 <div className="flex flex-col gap-5">
                   {replies.map((reply) => (
                     <Reply
-                      username={reply.user.name}
-                      avatarUrl={reply.user.avatar}
+                      username={"reply.user.name"}
+                      avatarUrl={"reply.user.avatar"}
                       content={reply.reply}
                       timestamp={reply.created_at}
                       topLevel={true}
-                      replies={reply.post_replies}
+                      // replies={reply.post_replies}
+                      replies={[]}
                     />
                   ))}
                 </div>

@@ -11,6 +11,7 @@ import { ProductCard } from "~/features/products/components/product-card";
 import { getProductsByDateRange } from "~/features/products/queries";
 import { TeamCard } from "~/features/teams/components/TeamCard";
 import { getTeams } from "~/features/teams/queries";
+import { makeSSRClient } from "~/supa-client";
 
 import { Button } from "../components/ui/button";
 import type { Route } from "./+types/home-page";
@@ -25,20 +26,22 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async () => {
-  const products = await getProductsByDateRange({
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
+  const products = await getProductsByDateRange(client, {
     startDate: DateTime.now().startOf("day"),
     endDate: DateTime.now().endOf("day"),
     limit: 7,
   });
 
-  const posts = await getPosts({ limit: 7, sorting: "newest" });
+  const posts = await getPosts(client, {
+    limit: 7,
+    sorting: "newest",
+  });
 
-  const ideas = await getGptIdeas({ limit: 7 });
-
-  const jobs = await getJobs({ limit: 11 });
-
-  const teams = await getTeams({ limit: 7 });
+  const ideas = await getGptIdeas(client, { limit: 7 });
+  const jobs = await getJobs(client, { limit: 11 });
+  const teams = await getTeams(client, { limit: 7 });
 
   return { products, posts, ideas, jobs, teams };
 };
@@ -168,8 +171,8 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           <TeamCard
             key={team.team_id}
             id={team.team_id}
-            leaderUsername={team.team_leader.username}
-            leaderAvatarUrl={team.team_leader.avatar}
+            leaderUsername={"team.team_leader.username"}
+            leaderAvatarUrl={"team.team_leader.avatar"}
             positions={team.roles.split(",")}
             projectDescription={team.product_description}
           />

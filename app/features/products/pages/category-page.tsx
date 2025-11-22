@@ -3,6 +3,7 @@ import { dateMatchModifiers } from "react-day-picker";
 import { z } from "zod";
 import { Hero } from "~/common/components/hero";
 import ProductPagination from "~/common/components/product-pagination";
+import { makeSSRClient } from "~/supa-client";
 
 import { ProductCard } from "../components/product-card";
 import {
@@ -33,14 +34,16 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   if (!success) throw new Response("Invalid category", { status: 400 });
 
-  const category = await getCategory(data.category);
-
-  const products = await getProductsByCategory({
+  const { client, headers } = makeSSRClient(request);
+  const category = await getCategory(client, { categoryId: data.category });
+  const products = await getProductsByCategory(client, {
     categoryId: data.category,
     page,
   });
 
-  const totalPages = await getCategoryPages(data.category);
+  const totalPages = await getCategoryPages(client, {
+    categoryId: data.category,
+  });
 
   return { category, products, totalPages };
 };

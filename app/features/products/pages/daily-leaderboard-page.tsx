@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Hero } from "~/common/components/hero";
 import ProductPagination from "~/common/components/product-pagination";
 import { Button } from "~/common/components/ui/button";
+import { makeSSRClient } from "~/supa-client";
 
 import { ProductCard } from "../components/product-card";
 import { PAGE_SIZE } from "../constants";
@@ -72,14 +73,15 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const startDate = date.startOf("day");
   const endDate = date.endOf("day");
 
-  const products = await getProductsByDateRange({
+  const { client, headers } = makeSSRClient(request);
+  const products = await getProductsByDateRange(client, {
     startDate,
     endDate,
     limit: PAGE_SIZE,
     page: Number(url.searchParams.get("page") || 1),
   });
 
-  const totalPages = await getProductPagesByDateRange({
+  const totalPages = await getProductPagesByDateRange(client, {
     startDate,
     endDate,
   });

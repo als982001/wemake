@@ -2,6 +2,7 @@ import { DotIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import { Badge } from "~/common/components/ui/badge";
 import { Button } from "~/common/components/ui/button";
+import { makeSSRClient } from "~/supa-client";
 
 import { getJobById } from "../queries";
 import type { Route } from "./+types/job-page";
@@ -10,8 +11,9 @@ export const meta: Route.MetaFunction = () => {
   return [{ title: "Job Details | wemake" }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const job = await getJobById(params.jobId);
+export const loader = async ({ request, params }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
+  const job = await getJobById(client, { jobId: params.jobId });
 
   return { job };
 };
@@ -44,7 +46,7 @@ export default function JobPage({ loaderData }: Route.ComponentProps) {
           <div className="space-y-2.5">
             <h4 className="text-2xl font-bold">Responsibilities</h4>
             <ul className="text-lg list-disc list-inside">
-              {job.responsibilities.split(",").map((item) => (
+              {job.responsibilities.split(",").map((item: any) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -52,7 +54,7 @@ export default function JobPage({ loaderData }: Route.ComponentProps) {
           <div className="space-y-2.5">
             <h4 className="text-2xl font-bold">Qualifications</h4>
             <ul className="text-lg list-disc list-inside">
-              {job.qualifications.split(",").map((item) => (
+              {job.qualifications.split(",").map((item: any) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -60,7 +62,7 @@ export default function JobPage({ loaderData }: Route.ComponentProps) {
           <div className="space-y-2.5">
             <h4 className="text-2xl font-bold">Benefits</h4>
             <ul className="text-lg list-disc list-inside">
-              {job.benefits.split(",").map((item) => (
+              {job.benefits.split(",").map((item: any) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -68,7 +70,7 @@ export default function JobPage({ loaderData }: Route.ComponentProps) {
           <div className="space-y-2.5">
             <h4 className="text-2xl font-bold">Skills</h4>
             <ul className="text-lg list-disc list-inside">
-              {job.skills.split(",").map((item) => (
+              {job.skills.split(",").map((item: any) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>

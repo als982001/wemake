@@ -17,6 +17,7 @@ import {
 } from "~/common/components/ui/dialog";
 import { Textarea } from "~/common/components/ui/textarea";
 import { cn } from "~/lib/utils";
+import { makeSSRClient } from "~/supa-client";
 
 import { getUserProfile } from "../queries";
 import type { Route } from "./+types/profile-layout";
@@ -26,11 +27,13 @@ export const meta: Route.MetaFunction = ({ data }) => {
 };
 
 export const loader = async ({
+  request,
   params,
 }: Route.LoaderArgs & { params: { username: string } }) => {
-  const user = await getUserProfile(params.username);
-
-  console.log("user", user);
+  const { client, headers } = makeSSRClient(request);
+  const user = await getUserProfile(client, {
+    username: params.username,
+  });
 
   return { user };
 };
